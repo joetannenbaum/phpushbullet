@@ -1,0 +1,21 @@
+{
+    "name": "joetannenbaum/phpushbullet",
+    "description": "",
+    "authors": [
+        {
+            "name": "Joe Tannenbaum",
+            "email": "hey@joe.codes"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*",
+        "guzzlehttp/guzzle": "~4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "JoeTannenbaum\\PHPushbullet\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
