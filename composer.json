@@ -1,6 +1,8 @@
 {
     "name": "joetannenbaum/phpushbullet",
     "description": "PHP API wrapper for Pushbullet.",
+    "keywords": [ "pushbullet", "php", "api", "push", "bullet", "notification" ],
+    "license": "MIT",
     "authors": [
         {
             "name": "Joe Tannenbaum",
