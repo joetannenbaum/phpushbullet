@@ -54,5 +54,76 @@ $pushbullet->device('Chrome')->device('Galaxy S4')->note('Remember', 'Buy some e
 $pushbullet->device('Chrome', 'Galaxy S4')->note('Remember', 'Buy some eggs.');
 ```
 
+### Notes
 
-###
+Arguments:
+
++ Title
++ Body
+
+```php
+$pushbullet->device('Chrome')->note('Musings', 'Why are fudgy brownies better than cakey brownies?');
+```
+
+### Links
+
+Arguments:
+
++ Title
++ URL
++ Body (optional)
+
+```php
+$pushbullet->device('Chrome')->link('Look It Up', 'http://google.com', 'I hear this is a good site for finding things.');
+```
+
+### Addresses
+
+Arguments:
++ Name
++ Address
+
+```php
+$pushbullet->device('Chrome')->address('The Hollywood Sign', '4059 Mt Lee Drive Hollywood, CA 90068');
+```
+
+Alternatively, you can pass in an associative array:
+
+```php
+$address = [
+  'address' => '4059 Mt Lee Drive',
+  'city'    => 'Hollywood',
+  'state'   => 'CA',
+  'zip'     => '90068',
+];
+
+$pushbullet->device('Chrome')->address('The Hollywood Sign', $address);
+```
+
+### Lists
+
+Arguments:
++ Title
++ Items (array)
+
+```php
+$items = [
+  'Socks',
+  'Pants',
+  'Keys',
+  'Wallet',
+];
+
+$pushbullet->device('Chrome')->list('Do Not Forget', $items);
+```
+
+### Files
+
+Arguments:
++ File Name
++ File URL (must be publicly available)
++ Body (optional)
+
+```php
+$pushbullet->device('Chrome')->file('The Big Presentation', 'http://example.com/do-not-lose-this.pptx', 'Final version of slides.');
+```
