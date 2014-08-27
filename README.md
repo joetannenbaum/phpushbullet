@@ -17,7 +17,7 @@ A PHP library for the [Pushbullet](https://www.pushbullet.com/) API.
 
 ## Installation
 
-~~Using [composer](https://packagist.org/packages/joetannenbaum/climate):~~ (WIP, not quite available yet.)
+Using [composer](https://packagist.org/packages/joetannenbaum/climate):
 
 ```
 {
