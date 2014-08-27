@@ -4,6 +4,17 @@
 
 A PHP library for the [Pushbullet](https://www.pushbullet.com/) API.
 
+## Table of Contents
+
++ [Installation](#installation)
++ [Listing Devices](#listing-devices)
++ [Pushing to Devices](#pushing-to-devices)
+  + [Notes](#notes)
+  + [Links](#links)
+  + [Addresses](#addresses)
+  + [Lists](#lists)
+  + [Files](#files)
+
 ## Installation
 
 ~~Using [composer](https://packagist.org/packages/joetannenbaum/climate):~~ (WIP, not quite available yet.)
