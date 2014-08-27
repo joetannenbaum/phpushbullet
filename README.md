@@ -1,5 +1,6 @@
-PHPushbullet
-============
+# PHPushbullet
+
+[![Build Status](https://travis-ci.org/joetannenbaum/phpushbullet.svg?branch=master)](https://travis-ci.org/joetannenbaum/phpushbullet)
 
 A PHP library for the [Pushbullet](https://www.pushbullet.com/) API.
 
@@ -32,6 +33,8 @@ To list the available devices on your account:
 ```php
 $pushbullet->devices();
 ```
+
+This will return an array of objects with all of the device information.
 
 ## Pushing to Devices
 
