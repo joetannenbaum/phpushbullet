@@ -16,7 +16,7 @@ class PushFile extends Request {
 	{
 		$this->parameters['file_name'] = $file_name;
 		$this->parameters['file_url']  = $file_url;
-		$this->parameters['file_type'] = $this->getFileType( $file_url )
+		$this->parameters['file_type'] = $this->getFileType( $file_url );
 		$this->parameters['body']      = $body;
 	}
 

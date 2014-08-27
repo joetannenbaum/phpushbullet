@@ -32,7 +32,7 @@ class PushAddress extends Request {
 		{
 			$new_address = [];
 
-			foreach ( [ 'address', 'state', 'city', 'zip' ] as $field )
+			foreach ( [ 'address', 'city', 'state', 'zip' ] as $field )
 			{
 				if ( array_key_exists( $field, $address ) )
 				{

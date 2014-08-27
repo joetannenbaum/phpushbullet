@@ -7,34 +7,10 @@ class PHPushbullet {
 	/**
 	 * An instance of the Guzzle client to make requests
 	 *
-	 * @var \GuzzleHttp\Client $client
+	 * @var \GuzzleHttp\Client $api
 	 */
 
-	protected $client;
-
-	/**
-	 * The Pushbullet access token
-	 *
-	 * @var string $access_token
-	 */
-
-	protected $access_token;
-
-	/**
-	 * The base url for the Pushbullet API
-	 *
-	 * @var string $base_url
-	 */
-
-	protected $base_url = 'https://api.pushbullet.com/{version}/';
-
-	/**
-	 * The version of the Pushbullet API
-	 *
-	 * @var string $version
-	 */
-
-	protected $version  = 'v2';
+	protected $api;
 
 	/**
 	 * The set of devices we are currently pushing to
@@ -52,16 +28,16 @@ class PHPushbullet {
 
 	protected $all_devices = [];
 
-	public function __construct()
+	public function __construct( $access_token = NULL )
 	{
-		$this->access_token = getenv( 'pushbullet.access_token' );
+		$access_token = $access_token ?: getenv( 'pushbullet.access_token' );
 
-		if ( !$this->access_token )
+		if ( !$access_token )
 		{
-			throw new \Exception('Your Pushbullet access token is not present in your .env file.');
+			throw new \Exception('Your Pushbullet access token is not set.');
 		}
 
-		$this->client = $this->getClient();
+		$this->api = ( new Connection( $access_token ) )->client();
 	}
 
 	/**
@@ -74,7 +50,7 @@ class PHPushbullet {
 	{
 		if ( empty( $this->all_devices ) )
 		{
-			$devices = $this->client->get('devices')->json()['devices'];
+			$devices = $this->api->get('devices')->json()['devices'];
 
 			foreach ( $devices as $device )
 			{
@@ -83,22 +59,6 @@ class PHPushbullet {
 		}
 
 		return $this->all_devices;
-	}
-
-	/**
-	 * Set all of the devices for the current push
-	 *
-	 * @return JoeTannenbaum\PHPushbullet\PHPushbullet
-	 */
-
-	public function all()
-	{
-		foreach ( $this->devices() as $available_device )
-		{
-			$this->device[] = $available_device->iden;
-		}
-
-		return $this;
 	}
 
 	/**
@@ -115,10 +75,26 @@ class PHPushbullet {
 
 			if ( !$device )
 			{
-				throw new \Exception( "{$destination_device} is not a valid device." );
+				throw new \Exception( "{$destination} is not a valid device." );
 			}
 
 			$this->devices[] = $device;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Set all of the devices for the current push
+	 *
+	 * @return JoeTannenbaum\PHPushbullet\PHPushbullet
+	 */
+
+	public function all()
+	{
+		foreach ( $this->devices() as $device )
+		{
+			$this->device[] = $device->iden;
 		}
 
 		return $this;
@@ -132,12 +108,17 @@ class PHPushbullet {
 
 	public function push( $request )
 	{
+		if ( empty( $this->devices ) )
+		{
+			throw new \Exception('You must specify which device(s) to push to.');
+		}
+
 		$responses = [];
 
 		foreach ( $this->devices as $device )
 		{
 			$request['device_iden'] = $device;
-			$response               = $this->client->post('pushes', [ 'json' => $request ]);
+			$response               = $this->api->post('pushes', [ 'json' => $request ]);
 			$responses[]            = $response->json();
 		}
 
@@ -167,25 +148,6 @@ class PHPushbullet {
 		}
 
 		return FALSE;
-	}
-
-	/**
-	 * Get the Guzzle client with defaults
-	 *
-	 * @return \GuzzleHttp\Client
-	 */
-
-	protected function getClient()
-	{
-		return new \GuzzleHttp\Client([
-									'base_url' => [
-													$this->base_url,
-													[ 'version' => $this->version ],
-												],
-									'defaults' => [
-									    'auth' => [ $this->access_token, '' ],
-									],
-								]);
 	}
 
 	/**

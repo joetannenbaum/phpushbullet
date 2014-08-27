@@ -1,6 +1,6 @@
 {
     "name": "joetannenbaum/phpushbullet",
-    "description": "",
+    "description": "PHP API wrapper for Pushbullet.",
     "authors": [
         {
             "name": "Joe Tannenbaum",
@@ -11,6 +11,9 @@
         "php": ">=5.4.0",
         "illuminate/support": "4.2.*",
         "guzzlehttp/guzzle": "~4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.1.*"
     },
     "autoload": {
         "psr-4": {
