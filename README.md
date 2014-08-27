@@ -14,22 +14,16 @@ Using [composer](https://packagist.org/packages/joetannenbaum/climate):
     }
 }
 ```
-Store your [Pushbullet access token](https://www.pushbullet.com/account) in your .env file, like so:
-```php
-return [
-  ...
-  'pushbullet' => [
-  		'access_token' => 'YOUR_TOKEN_HERE',
-  	],
-]
-```
-Then just fire it up:
+
+PHPushbullet takes one optional parameter, your [Pushbullet access token](https://www.pushbullet.com/account):
 
 ```php
 require_once('vendor/autoload.php');
 
-$pushbullet = new JoeTannenbaum\PHPushbullet\PHPushbullet;
+$pushbullet = new JoeTannenbaum\PHPushbullet\PHPushbullet('YOUR_ACCESS_TOKEN_HERE');
 ```
+
+If you do not wish to put your access token in your code (understandable), simply set it to the environment variable `pushbullet.access_token` and PHPushbullet will automatically pick it up.
 
 ## Listing Devices
 
@@ -38,3 +32,24 @@ To list the available devices on your account:
 ```php
 $pushbullet->devices();
 ```
+
+## Pushing to Devices
+
+When pushing a to a device, simply use the device's `nickname` or their `iden` from the list above.
+
+To push to a single device:
+
+```php
+$pushbullet->device('Chrome')->note('Remember', 'Buy some eggs.');
+```
+
+To push to multiple devices:
+
+```php
+$pushbullet->device('Chrome')->device('Galaxy S4')->note('Remember', 'Buy some eggs.');
+// or
+$pushbullet->device('Chrome', 'Galaxy S4')->note('Remember', 'Buy some eggs.');
+```
+
+
+###
