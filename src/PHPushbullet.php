@@ -21,6 +21,15 @@ class PHPushbullet {
 	protected $devices = [];
 
 	/**
+	 * The set of users we are currently pushing to,
+	 * an array of emails
+	 *
+	 * @var array $users
+	 */
+
+	protected $users = [];
+
+	/**
 	 * An array of all devices available
 	 *
 	 * @var array $all_devices
@@ -59,6 +68,15 @@ class PHPushbullet {
 		}
 
 		return $this->all_devices;
+	}
+
+	public function user()
+	{
+		$this->users = array_merge(func_get_args(), $this->users);
+		$this->users = array_filter($this->users);
+		$this->users = array_unique($this->users);
+
+		return $this;
 	}
 
 	/**
@@ -108,23 +126,43 @@ class PHPushbullet {
 
 	public function push( $request )
 	{
-		if ( empty( $this->devices ) )
+		if (empty($this->devices) && empty($this->users))
 		{
-			throw new \Exception('You must specify which device(s) to push to.');
+			throw new \Exception('You must specify which either a device or user to push to.');
 		}
 
 		$responses = [];
 
 		foreach ( $this->devices as $device )
 		{
-			$request['device_iden'] = $device;
-			$response               = $this->api->post('pushes', [ 'json' => $request ]);
-			$responses[]            = $response->json();
+			$responses[] = $this->pushRequest($request, ['device_iden' => $device]);
+		}
+
+		foreach ( $this->users as $user )
+		{
+			$responses[] = $this->pushRequest($request, ['user' => $user]);
 		}
 
 		$this->devices = [];
+		$this->users   = [];
 
 		return $responses;
+	}
+
+	/**
+	 * Create push request and... push it
+	 *
+	 * @param array $request
+	 * @param array $merge
+	 * @return array
+	 */
+
+	protected function pushRequest($request, $merge)
+	{
+		$request  = array_merge($request, $merge);
+		$response = $this->api->post('pushes', [ 'json' => $request ]);
+
+		return $response->json();
 	}
 
 	/**

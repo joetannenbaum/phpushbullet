@@ -6,14 +6,14 @@ var phpunit = require("gulp-phpunit");
 gulp.task("tests", function ()
 {
 	gulp.src("./tests/PHPushbulletTest.php")
-    .pipe( run("clear") )
-		.pipe( phpunit("phpunit"), {
-			debug: true,
-			notify: true
-		})
-    .on("error", function() {
-    	run("notify-send 'Tests Failed' 'Got some problems dude.'").exec();
-    })
+	    .pipe( run("clear") )
+			.pipe( phpunit("phpunit", {
+				debug: true,
+				notify: true
+			}))
+	    .on("error", function() {
+	    	run("notify-send 'Tests Failed' 'Got some problems dude.'").exec();
+	    })
 		.pipe( run("notify-send 'Tests Passed' 'Nailed it.'"));
 });
 
