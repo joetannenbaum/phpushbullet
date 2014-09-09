@@ -1,6 +1,6 @@
 <?php
 
-namespace JoeTannenbaum\PHPushbullet;
+namespace PHPushbullet;
 
 class PHPushbullet {
 
@@ -82,7 +82,7 @@ class PHPushbullet {
 	/**
 	 * Set the passed in device(s) for the current push
 	 *
-	 * @return JoeTannenbaum\PHPushbullet\PHPushbullet
+	 * @return PHPushbullet\PHPushbullet
 	 */
 
 	public function device()
@@ -105,7 +105,7 @@ class PHPushbullet {
 	/**
 	 * Set all of the devices for the current push
 	 *
-	 * @return JoeTannenbaum\PHPushbullet\PHPushbullet
+	 * @return PHPushbullet\PHPushbullet
 	 */
 
 	public function all()
@@ -194,7 +194,7 @@ class PHPushbullet {
 
 	public function __call( $method, $arguments )
 	{
-		$request_class = 'JoeTannenbaum\\PHPushbullet\\Request\\Push' . ucwords( $method );
+		$request_class = 'PHPushbullet\Request\Push' . ucwords( $method );
 
 		if ( class_exists( $request_class ) )
 		{

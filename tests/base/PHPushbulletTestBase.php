@@ -4,7 +4,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Mock;
 use GuzzleHttp\Message\Response;
 use GuzzleHttp\Subscriber\History;
-use JoeTannenbaum\PHPushbullet\PHPushbullet;
+use PHPushbullet\PHPushbullet;
 
 class PHPushbulletTestBase extends PHPUnit_Framework_TestCase {
 
@@ -16,7 +16,7 @@ class PHPushbulletTestBase extends PHPUnit_Framework_TestCase {
 
     public function setUp()
     {
-        $reflected = new ReflectionClass('JoeTannenbaum\\PHPushbullet\\PHPushbullet');
+        $reflected = new ReflectionClass('PHPushbullet\PHPushbullet');
 
         $this->history = new History();
 

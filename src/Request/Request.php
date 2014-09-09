@@ -1,6 +1,6 @@
 <?php
 
-namespace JoeTannenbaum\PHPushbullet\Request;
+namespace PHPushbullet\Request;
 
 abstract class Request {
 

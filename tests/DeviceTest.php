@@ -23,7 +23,7 @@ class DeviceTest extends PHPushbulletTestBase
         $this->assertInternalType( 'array', $response );
         $this->assertCount( 1, $response );
         $this->assertInternalType( 'object', reset( $response ) );
-        $this->assertInstanceOf( 'JoeTannenbaum\PHPushbullet\Device', reset( $response ) );
+        $this->assertInstanceOf( 'PHPushbullet\Device', reset( $response ) );
 
         $expected_flow = [ 'devices' ];
         $actual_flow   = $this->getFlow();

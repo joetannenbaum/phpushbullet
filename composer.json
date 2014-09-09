@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JoeTannenbaum\\PHPushbullet\\": "src/"
+            "PHPushbullet\\": "src/"
         }
     },
     "minimum-stability": "stable"
