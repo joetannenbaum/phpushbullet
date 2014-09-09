@@ -140,7 +140,7 @@ class PHPushbullet {
 
 		foreach ( $this->users as $user )
 		{
-			$responses[] = $this->pushRequest($request, ['user' => $user]);
+			$responses[] = $this->pushRequest($request, ['email' => $user]);
 		}
 
 		$this->devices = [];
