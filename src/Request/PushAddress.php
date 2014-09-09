@@ -22,7 +22,7 @@ class PushAddress extends Request
 	 * The address can either be a string or an array,
 	 * make sure it's a string in the end
 	 *
-	 * @param mixed $address
+	 * @param string|array $address
 	 * @return string
 	 */
 
