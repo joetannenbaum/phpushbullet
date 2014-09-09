@@ -106,7 +106,7 @@ class PHPushbullet
     public function all()
     {
         foreach ($this->devices() as $device) {
-            $this->device[] = $device->iden;
+            $this->devices[] = $device->iden;
         }
 
         return $this;
