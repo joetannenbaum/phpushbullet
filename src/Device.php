@@ -31,7 +31,7 @@ class Device
                 $this->$field = $this->$method($attr[$field]);
             } else {
                 // Otherwise just set the property
-                $this->$field = $attr[$field];
+                $this->$field = isset($attr[$field]) ? $attr[$field] : null;
             }
         }
     }
