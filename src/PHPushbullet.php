@@ -2,6 +2,14 @@
 
 namespace PHPushbullet;
 
+/**
+ * @method array address(string $name, string|array $address)
+ * @method array file(string $file_name, string $file_url, string|null $body)
+ * @method array link(string $title, string $url, string|null $body)
+ * @method array list(string $title, array $items)
+ * @method array note(string $title, string $body)
+ */
+
 class PHPushbullet
 {
     /**
