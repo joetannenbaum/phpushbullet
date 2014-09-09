@@ -1,6 +1,11 @@
 # PHPushbullet
 
-[![Build Status](https://travis-ci.org/joetannenbaum/phpushbullet.svg?branch=master)](https://travis-ci.org/joetannenbaum/phpushbullet)
+[![Latest Version](https://img.shields.io/github/release/joetannenbaum/phpushbullet.svg?style=flat)](https://github.com/joetannenbaum/phpushbullet/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE.md)
+[![Build Status](https://img.shields.io/travis/joetannenbaum/phpushbullet/master.svg?style=flat)](https://travis-ci.org/joetannenbaum/phpushbullet)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/joetannenbaum/phpushbullet.svg?style=flat)](https://scrutinizer-ci.com/g/joetannenbaum/phpushbullet/code-structure)
+[![Quality Score](https://img.shields.io/scrutinizer/g/joetannenbaum/phpushbullet.svg?style=flat)](https://scrutinizer-ci.com/g/joetannenbaum/phpushbullet)
+[![Total Downloads](https://img.shields.io/packagist/dt/joetannenbaum/phpushbullet.svg?style=flat)](https://packagist.org/packages/joetannenbaum/phpushbullet)
 
 A PHP library for the [Pushbullet](https://www.pushbullet.com/) API.
 
