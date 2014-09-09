@@ -134,12 +134,15 @@ class PHPushbullet
 
         $responses = [];
 
-        foreach ($this->devices as $device) {
-            $responses[] = $this->pushRequest($request, ['device_iden' => $device]);
-        }
+        $destinations = [
+            'devices' => 'device_iden',
+            'users'   => 'email',
+        ];
 
-        foreach ($this->users as $user) {
-            $responses[] = $this->pushRequest($request, ['email' => $user]);
+        foreach ($destinations as $destination => $key) {
+            foreach ($this->{$destination} as $dest) {
+                $responses[] = $this->pushRequest($request, [$key => $dest]);
+            }
         }
 
         $this->devices = [];
