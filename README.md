@@ -30,7 +30,7 @@ Using [composer](https://packagist.org/packages/joetannenbaum/phpushbullet):
 ```
 {
     "require": {
-        "joetannenbaum/phpushbullet": "0.1.*"
+        "joetannenbaum/phpushbullet": "~1.0"
     }
 }
 ```
