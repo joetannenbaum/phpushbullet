@@ -13,7 +13,10 @@ A PHP library for the [Pushbullet](https://www.pushbullet.com/) API.
 
 + [Installation](#installation)
 + [Listing Devices](#listing-devices)
-+ [Pushing to Devices](#pushing-to-devices)
++ [Pushing](#pushing)
+  + [To Devices](#to-devices)
+  + [To Users](#to-devices)
++ [Types](#types)
   + [Notes](#notes)
   + [Links](#links)
   + [Addresses](#addresses)
@@ -52,7 +55,9 @@ $pushbullet->devices();
 
 This will return an array of objects with all of the device information.
 
-## Pushing to Devices
+## Pushing
+
+### To Devices
 
 When pushing a to a device, simply use the device's `nickname` or their `iden` from the list above.
 
@@ -69,6 +74,25 @@ $pushbullet->device('Chrome')->device('Galaxy S4')->note('Remember', 'Buy some e
 // or
 $pushbullet->device('Chrome', 'Galaxy S4')->note('Remember', 'Buy some eggs.');
 ```
+
+### To Users
+
+When pushing a to a user, simply use the user's email address:
+
+To push to a single user:
+
+```php
+$pushbullet->user('joe@example.com')->note('Remember', 'Buy some eggs.');
+```
+
+To push to multiple users:
+
+```php
+$pushbullet->user('joe@example.com')->user('anne@example.com')->note('Remember', 'Buy some eggs.');
+// or
+$pushbullet->user('joe@example.com', 'anne@example.com')->note('Remember', 'Buy some eggs.');
+```
+## Types
 
 ### Notes
 
