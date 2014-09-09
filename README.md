@@ -15,7 +15,7 @@ A PHP library for the [Pushbullet](https://www.pushbullet.com/) API.
 + [Listing Devices](#listing-devices)
 + [Pushing](#pushing)
   + [To Devices](#to-devices)
-  + [To Users](#to-devices)
+  + [To Users](#to-users)
 + [Types](#types)
   + [Notes](#notes)
   + [Links](#links)
