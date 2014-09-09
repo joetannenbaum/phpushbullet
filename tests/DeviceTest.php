@@ -111,7 +111,7 @@ class DeviceTest extends PHPushbulletTestBase
 
     public function it_throws_an_error_for_if_a_device_is_not_set()
     {
-        $response = $this->pushbullet->note('Title', 'Body');
+        $this->pushbullet->note('Title', 'Body');
     }
 
     /**
@@ -132,7 +132,7 @@ class DeviceTest extends PHPushbulletTestBase
             $this->okResponse( $response )
         ]);
 
-        $response = $this->pushbullet->device('Chromebook')->note('Title', 'Body');
+        $this->pushbullet->device('Chromebook')->note('Title', 'Body');
     }
 
 }
