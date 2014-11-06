@@ -29,7 +29,8 @@ class PushFile extends Request
 
     protected function getFileType($file_url)
     {
-        $file_info = \GuzzleHttp\head($file_url);
+        $client    = new \GuzzleHttp\Client();
+        $file_info = $client->head($file_url);
 
         return $file_info->getHeader('content-type');
     }
