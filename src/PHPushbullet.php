@@ -17,7 +17,6 @@ class PHPushbullet
 	 *
 	 * @var \GuzzleHttp\Client $api
 	 */
-
     protected $api;
 
     /**
@@ -25,7 +24,6 @@ class PHPushbullet
 	 *
 	 * @var array $devices
 	 */
-
     protected $devices = [];
 
     /**
@@ -34,15 +32,20 @@ class PHPushbullet
 	 *
 	 * @var array $users
 	 */
-
     protected $users = [];
+
+    /**
+     * The set of channels we are currntly pushing to
+     *
+     * @var array $channels
+     */
+    protected $channels = [];
 
     /**
 	 * An array of all devices available
 	 *
 	 * @var array $all_devices
 	 */
-
     protected $all_devices = [];
 
     public function __construct($access_token = null)
@@ -61,7 +64,6 @@ class PHPushbullet
 	 *
 	 * @return array
 	 */
-
     public function devices()
     {
         if (empty($this->all_devices)) {
@@ -85,11 +87,10 @@ class PHPushbullet
     }
 
     /**
-	 * Set the passed in device(s) for the current push
-	 *
-	 * @return PHPushbullet\PHPushbullet
-	 */
-
+     * Set the passed in device(s) for the current push
+     *
+     * @return \PHPushbullet\PHPushbullet
+     */
     public function device()
     {
         foreach (func_get_args() as $destination) {
@@ -106,11 +107,22 @@ class PHPushbullet
     }
 
     /**
+     * Set the passed in channel(s) for the current push
+     *
+     * @return \PHPushbullet\PHPushbullet
+     */
+    public function channel()
+    {
+        $this->channels = array_merge(func_get_args());
+
+        return $this;
+    }
+
+    /**
 	 * Set all of the devices for the current push
 	 *
-	 * @return PHPushbullet\PHPushbullet
+	 * @return \PHPushbullet\PHPushbullet
 	 */
-
     public function all()
     {
         foreach ($this->devices() as $device) {
@@ -125,18 +137,18 @@ class PHPushbullet
 	 *
 	 * @return array
 	 */
-
     public function push($request)
     {
-        if (empty($this->devices) && empty($this->users)) {
-            throw new \Exception('You must specify which either a device or user to push to.');
+        if (empty($this->devices) && empty($this->users) && empty($this->channels)) {
+            throw new \Exception('You must specify something to push to.');
         }
 
         $responses = [];
 
         $destinations = [
-            'devices' => 'device_iden',
-            'users'   => 'email',
+            'devices'  => 'device_iden',
+            'users'    => 'email',
+            'channels' => 'channel_tag',
         ];
 
         foreach ($destinations as $destination => $key) {
@@ -145,8 +157,9 @@ class PHPushbullet
             }
         }
 
-        $this->devices = [];
-        $this->users   = [];
+        $this->devices  = [];
+        $this->users    = [];
+        $this->channels = [];
 
         return $responses;
     }
@@ -156,9 +169,9 @@ class PHPushbullet
 	 *
 	 * @param array $request
 	 * @param array $merge
+     *
 	 * @return array
 	 */
-
     protected function pushRequest($request, $merge)
     {
         $request  = array_merge($request, $merge);
@@ -171,9 +184,9 @@ class PHPushbullet
 	 * Get the `iden` for the device by either the iden or nickname
 	 *
 	 * @param string $device
+     *
 	 * @return mixed (boolean|string)
 	 */
-
     protected function getDeviceIden($device)
     {
         foreach ($this->devices() as $available_device) {
@@ -190,7 +203,6 @@ class PHPushbullet
     /**
 	 * Magic method, figures out what sort of push the user is trying to do
 	 */
-
     public function __call($method, $arguments)
     {
         $request_class = 'PHPushbullet\Request\Push' . ucwords($method);

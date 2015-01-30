@@ -106,7 +106,7 @@ class DeviceTest extends PHPushbulletTestBase
     /**
      * @test
      * @expectedException        Exception
-     * @expectedExceptionMessage You must specify which either a device or user to push to.
+     * @expectedExceptionMessage You must specify something to push to.
      */
 
     public function it_throws_an_error_for_if_a_device_is_not_set()
