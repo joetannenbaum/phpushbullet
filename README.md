@@ -40,7 +40,7 @@ PHPushbullet takes one optional parameter, your [Pushbullet access token](https:
 ```php
 require_once('vendor/autoload.php');
 
-$pushbullet = new JoeTannenbaum\PHPushbullet\PHPushbullet('YOUR_ACCESS_TOKEN_HERE');
+$pushbullet = new PHPushbullet\PHPushbullet('YOUR_ACCESS_TOKEN_HERE');
 ```
 
 If you do not wish to put your access token in your code (understandable), simply set it to the environment variable `pushbullet.access_token` and PHPushbullet will automatically pick it up.
