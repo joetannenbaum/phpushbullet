@@ -79,7 +79,13 @@ class PHPushbullet
 
     public function user()
     {
-        $this->users = array_merge(func_get_args(), $this->users);
+        if (is_array(func_get_arg(0))) {
+            $users = func_get_arg(0);
+        } else {
+            $users = func_get_args();
+        }
+
+        $this->users = array_merge($users, $this->users);
         $this->users = array_filter($this->users);
         $this->users = array_unique($this->users);
 
@@ -93,7 +99,13 @@ class PHPushbullet
      */
     public function device()
     {
-        foreach (func_get_args() as $destination) {
+        if (is_array(func_get_arg(0))) {
+            $devices = func_get_arg(0);
+        } else {
+            $devices = func_get_args();
+        }
+
+        foreach ($devices as $destination) {
             $device = $this->getDeviceIden($destination);
 
             if (!$device) {
@@ -113,7 +125,13 @@ class PHPushbullet
      */
     public function channel()
     {
-        $this->channels = array_merge(func_get_args());
+        if (is_array(func_get_arg(0))) {
+            $channels = func_get_arg(0);
+        } else {
+            $channels = func_get_args();
+        }
+
+        $this->channels = array_merge($channels);
 
         return $this;
     }

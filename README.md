@@ -73,6 +73,8 @@ To push to multiple devices:
 $pushbullet->device('Chrome')->device('Galaxy S4')->note('Remember', 'Buy some eggs.');
 // or
 $pushbullet->device('Chrome', 'Galaxy S4')->note('Remember', 'Buy some eggs.');
+// or
+$pushbullet->device(['Chrome', 'Galaxy S4'])->note('Remember', 'Buy some eggs.');
 ```
 
 ### To Users
@@ -91,6 +93,8 @@ To push to multiple users:
 $pushbullet->user('joe@example.com')->user('anne@example.com')->note('Remember', 'Buy some eggs.');
 // or
 $pushbullet->user('joe@example.com', 'anne@example.com')->note('Remember', 'Buy some eggs.');
+// or
+$pushbullet->user(['joe@example.com', 'anne@example.com'])->note('Remember', 'Buy some eggs.');
 ```
 ## Types
 
