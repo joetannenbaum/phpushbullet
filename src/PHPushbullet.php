@@ -144,7 +144,9 @@ class PHPushbullet
     public function all()
     {
         foreach ($this->devices() as $device) {
-            $this->devices[] = $device->iden;
+            if($device->pushable == true) {
+                $this->devices[] = $device->iden;
+            }
         }
 
         return $this;
