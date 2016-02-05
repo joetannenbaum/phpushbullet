@@ -2,6 +2,8 @@
 
 namespace PHPushbullet;
 
+use GuzzleHttp\Client;
+
 class Connection
 {
     /**
@@ -9,38 +11,29 @@ class Connection
      *
      * @var string $base_url
      */
+    protected $base_url = 'https://api.pushbullet.com/v2/';
 
-    protected $base_url = 'https://api.pushbullet.com/{version}/';
 
     /**
-     * The version of the Pushbullet API
+     * The pre-configured Guzzle client
      *
-     * @var string $version
+     * @var \GuzzleHttp\Client
      */
-
-    protected $version  = 'v2';
-
     protected $client;
-
-    /**
-     * Get the Guzzle client with defaults
-     *
-     * @return \GuzzleHttp\Client
-     */
 
     public function __construct($access_token)
     {
-        $this->client = new \GuzzleHttp\Client([
-            'base_url' => [
-                            $this->base_url,
-                            ['version' => $this->version],
-                        ],
+        $this->client = new Client([
+            'base_url' => [$this->base_url, []],
             'defaults' => [
                 'auth' => [$access_token, ''],
             ],
         ]);
     }
 
+    /**
+     * @return \GuzzleHttp\Client
+     */
     public function client()
     {
         return $this->client;

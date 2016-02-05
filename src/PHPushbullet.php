@@ -67,11 +67,11 @@ class PHPushbullet
     public function devices()
     {
         if (empty($this->all_devices)) {
-            $devices = $this->api->get('devices')->json()['devices'];
+            $response = $this->fromJson($this->api->get('devices'));
 
             $this->all_devices = array_map(function ($device) {
                 return new Device($device);
-            }, $devices);
+            }, $response['devices']);
         }
 
         return $this->all_devices;
@@ -181,7 +181,7 @@ class PHPushbullet
         $request  = array_merge($request, $merge);
         $response = $this->api->post('pushes', ['json' => $request]);
 
-        return $response->json();
+        return $this->fromJson($response);
     }
 
     /**
@@ -204,6 +204,11 @@ class PHPushbullet
         return false;
     }
 
+    /**
+     * @param type $args
+     *
+     * @return array
+     */
     protected function argsToArray($args)
     {
         if (is_array($args[0])) {
@@ -211,6 +216,11 @@ class PHPushbullet
         }
 
         return $args;
+    }
+
+    protected function fromJson($response)
+    {
+        return json_decode((string) $response->getBody(), true);
     }
 
     /**
@@ -221,7 +231,7 @@ class PHPushbullet
         $request_class = 'PHPushbullet\Request\Push' . ucwords($method);
 
         if (!class_exists($request_class)) {
-            throw new \Exception('Unknown method "' . $method . '"');
+            throw new \Exception(sprintf('Unknown method "%s"', $method));
         }
 
         $class   = new \ReflectionClass($request_class);
