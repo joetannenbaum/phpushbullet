@@ -16,43 +16,42 @@ class ListTest extends PHPushbulletTestBase
         ];
 
         $response = $this->pushResponse([
-                                          'type'  => 'list',
-                                          'title' => 'My List',
-                                          'items' => [
-                                                        'This',
-                                                        'That',
-                                                        'Other thing',
-                                                      ],
-                                        ]);
+          'type'  => 'list',
+          'title' => 'My List',
+          'items' => [
+            'This',
+            'That',
+            'Other thing',
+          ],
+        ]);
 
         $this->mock([
-            $this->okResponse( $devices ),
-            $this->okResponse( $response ),
+            $this->okResponse($devices),
+            $this->okResponse($response),
         ]);
 
         $response = $this->pushbullet->device('Chrome')->list('My List', [
-                                                                            'This',
-                                                                            'That',
-                                                                            'Other thing',
-                                                                          ]);
+            'This',
+            'That',
+            'Other thing',
+        ]);
 
-        $this->assertInternalType( 'array', $response );
-        $this->assertCount( 1, $response );
+        $this->assertInternalType('array', $response);
+        $this->assertCount(1, $response);
 
-        $first = reset( $response );
+        $first = reset($response);
 
-        $this->assertSame( 'list', $first['type'] );
-        $this->assertSame( 'My List', $first['title'] );
-        $this->assertSame( [
+        $this->assertSame('list', $first['type']);
+        $this->assertSame('My List', $first['title']);
+        $this->assertSame([
                             'This',
                             'That',
                             'Other thing',
-                          ], $first['items'] );
+                          ], $first['items']);
 
-        $expected_flow = [ 'devices', 'pushes' ];
+        $expected_flow = ['devices', 'pushes'];
         $actual_flow   = $this->getFlow();
 
-        $this->assertSame( $expected_flow, $actual_flow );
+        $this->assertSame($expected_flow, $actual_flow);
     }
-
 }

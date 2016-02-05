@@ -2,13 +2,15 @@
 
 namespace PHPushbullet\Request;
 
+use GuzzleHttp\Client;
+
 class PushFile extends Request
 {
     /**
-	 * The type according to the Pushbullet API
-	 *
-	 * @var string $type
-	 */
+     * The type according to the Pushbullet API
+     *
+     * @var string $type
+     */
 
     protected $type = 'file';
 
@@ -21,15 +23,15 @@ class PushFile extends Request
     }
 
     /**
-	 * Get the file type based on the file url
-	 *
-	 * @param string $file_url
-	 * @return string
-	 */
+     * Get the file type based on the file url
+     *
+     * @param string $file_url
+     * @return string
+     */
 
     protected function getFileType($file_url)
     {
-        $client    = new \GuzzleHttp\Client();
+        $client    = new Client();
         $file_info = $client->head($file_url);
 
         return $file_info->getHeader('content-type');

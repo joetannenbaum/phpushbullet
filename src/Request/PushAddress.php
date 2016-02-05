@@ -5,10 +5,10 @@ namespace PHPushbullet\Request;
 class PushAddress extends Request
 {
     /**
-	 * The type according to the Pushbullet API
-	 *
-	 * @var string $type
-	 */
+     * The type according to the Pushbullet API
+     *
+     * @var string $type
+     */
 
     protected $type = 'address';
 
@@ -19,14 +19,14 @@ class PushAddress extends Request
     }
 
     /**
-	 * The address can either be a string or an array,
-	 * make sure it's a string in the end
-	 *
-	 * @param string|array $address
-	 * @return string
-	 */
+     * The address can either be a string or an array,
+     * make sure it's a string in the end
+     *
+     * @param string|array $address
+     * @return string
+     */
 
-    private function setAddress($address)
+    protected function setAddress($address)
     {
         if (is_array($address)) {
             $new_address = [];

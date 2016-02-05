@@ -16,33 +16,33 @@ class LinkTest extends PHPushbulletTestBase
         ];
 
         $response = $this->pushResponse([
-                                          'type'  => 'link',
-                                          'title' => 'Google',
-                                          'url'   => 'http://www.google.com',
-                                          'body'  => 'Search it',
-                                        ]);
+          'type'  => 'link',
+          'title' => 'Google',
+          'url'   => 'http://www.google.com',
+          'body'  => 'Search it',
+        ]);
 
         $this->mock([
-            $this->okResponse( $devices ),
-            $this->okResponse( $response ),
+            $this->okResponse($devices),
+            $this->okResponse($response),
         ]);
 
         $response = $this->pushbullet->device('Chrome')->link('Google', 'http://www.google.com', 'Search it');
 
-        $this->assertInternalType( 'array', $response );
-        $this->assertCount( 1, $response );
+        $this->assertInternalType('array', $response);
+        $this->assertCount(1, $response);
 
-        $first = reset( $response );
+        $first = reset($response);
 
-        $this->assertSame( 'link', $first['type'] );
-        $this->assertSame( 'Google', $first['title'] );
-        $this->assertSame( 'http://www.google.com', $first['url'] );
-        $this->assertSame( 'Search it', $first['body'] );
+        $this->assertSame('link', $first['type']);
+        $this->assertSame('Google', $first['title']);
+        $this->assertSame('http://www.google.com', $first['url']);
+        $this->assertSame('Search it', $first['body']);
 
-        $expected_flow = [ 'devices', 'pushes' ];
+        $expected_flow = ['devices', 'pushes'];
         $actual_flow   = $this->getFlow();
 
-        $this->assertSame( $expected_flow, $actual_flow );
+        $this->assertSame($expected_flow, $actual_flow);
     }
 
     /** @test */
@@ -57,31 +57,30 @@ class LinkTest extends PHPushbulletTestBase
         ];
 
         $response = $this->pushResponse([
-                                          'type'  => 'link',
-                                          'title' => 'Google',
-                                          'url'   => 'http://www.google.com',
-                                        ]);
+          'type'  => 'link',
+          'title' => 'Google',
+          'url'   => 'http://www.google.com',
+        ]);
 
         $this->mock([
-            $this->okResponse( $devices ),
-            $this->okResponse( $response ),
+            $this->okResponse($devices),
+            $this->okResponse($response),
         ]);
 
         $response = $this->pushbullet->device('Chrome')->link('Google', 'http://www.google.com');
 
-        $this->assertInternalType( 'array', $response );
-        $this->assertCount( 1, $response );
+        $this->assertInternalType('array', $response);
+        $this->assertCount(1, $response);
 
-        $first = reset( $response );
+        $first = reset($response);
 
-        $this->assertSame( 'link', $first['type'] );
-        $this->assertSame( 'Google', $first['title'] );
-        $this->assertSame( 'http://www.google.com', $first['url'] );
+        $this->assertSame('link', $first['type']);
+        $this->assertSame('Google', $first['title']);
+        $this->assertSame('http://www.google.com', $first['url']);
 
-        $expected_flow = [ 'devices', 'pushes' ];
+        $expected_flow = ['devices', 'pushes'];
         $actual_flow   = $this->getFlow();
 
-        $this->assertSame( $expected_flow, $actual_flow );
+        $this->assertSame($expected_flow, $actual_flow);
     }
-
 }

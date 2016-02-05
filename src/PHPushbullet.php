@@ -13,25 +13,25 @@ namespace PHPushbullet;
 class PHPushbullet
 {
     /**
-	 * An instance of the Guzzle client to make requests
-	 *
-	 * @var \GuzzleHttp\Client $api
-	 */
+     * An instance of the Guzzle client to make requests
+     *
+     * @var \GuzzleHttp\Client $api
+     */
     protected $api;
 
     /**
-	 * The set of devices we are currently pushing to
-	 *
-	 * @var array $devices
-	 */
+     * The set of devices we are currently pushing to
+     *
+     * @var array $devices
+     */
     protected $devices = [];
 
     /**
-	 * The set of users we are currently pushing to,
-	 * an array of emails
-	 *
-	 * @var array $users
-	 */
+     * The set of users we are currently pushing to,
+     * an array of emails
+     *
+     * @var array $users
+     */
     protected $users = [];
 
     /**
@@ -42,10 +42,10 @@ class PHPushbullet
     protected $channels = [];
 
     /**
-	 * An array of all devices available
-	 *
-	 * @var array $all_devices
-	 */
+     * An array of all devices available
+     *
+     * @var array $all_devices
+     */
     protected $all_devices = [];
 
     public function __construct($access_token = null)
@@ -60,18 +60,18 @@ class PHPushbullet
     }
 
     /**
-	 * Get a list of all of the devices available
-	 *
-	 * @return array
-	 */
+     * Get a list of all of the devices available
+     *
+     * @return array
+     */
     public function devices()
     {
         if (empty($this->all_devices)) {
             $devices = $this->api->get('devices')->json()['devices'];
 
-            foreach ($devices as $device) {
-                $this->all_devices[] = new Device($device);
-            }
+            $this->all_devices = array_map(function ($device) {
+                return new Device($device);
+            }, $devices);
         }
 
         return $this->all_devices;
@@ -79,13 +79,7 @@ class PHPushbullet
 
     public function user()
     {
-        if (is_array(func_get_arg(0))) {
-            $users = func_get_arg(0);
-        } else {
-            $users = func_get_args();
-        }
-
-        $this->users = array_merge($users, $this->users);
+        $this->users = array_merge($this->argsToArray(func_get_args()), $this->users);
         $this->users = array_filter($this->users);
         $this->users = array_unique($this->users);
 
@@ -99,11 +93,7 @@ class PHPushbullet
      */
     public function device()
     {
-        if (is_array(func_get_arg(0))) {
-            $devices = func_get_arg(0);
-        } else {
-            $devices = func_get_args();
-        }
+        $devices = $this->argsToArray(func_get_args());
 
         foreach ($devices as $destination) {
             $device = $this->getDeviceIden($destination);
@@ -125,26 +115,20 @@ class PHPushbullet
      */
     public function channel()
     {
-        if (is_array(func_get_arg(0))) {
-            $channels = func_get_arg(0);
-        } else {
-            $channels = func_get_args();
-        }
-
-        $this->channels = array_merge($channels);
+        $this->channels = array_merge($this->argsToArray(func_get_args()));
 
         return $this;
     }
 
     /**
-	 * Set all of the devices for the current push
-	 *
-	 * @return \PHPushbullet\PHPushbullet
-	 */
+     * Set all of the devices for the current push
+     *
+     * @return \PHPushbullet\PHPushbullet
+     */
     public function all()
     {
         foreach ($this->devices() as $device) {
-            if($device->pushable == true) {
+            if ($device->pushable == true) {
                 $this->devices[] = $device->iden;
             }
         }
@@ -153,10 +137,10 @@ class PHPushbullet
     }
 
     /**
-	 * Actually send the push
-	 *
-	 * @return array
-	 */
+     * Actually send the push
+     *
+     * @return array
+     */
     public function push($request)
     {
         if (empty($this->devices) && empty($this->users) && empty($this->channels)) {
@@ -185,13 +169,13 @@ class PHPushbullet
     }
 
     /**
-	 * Create push request and... push it
-	 *
-	 * @param array $request
-	 * @param array $merge
+     * Create push request and... push it
      *
-	 * @return array
-	 */
+     * @param array $request
+     * @param array $merge
+     *
+     * @return array
+     */
     protected function pushRequest($request, $merge)
     {
         $request  = array_merge($request, $merge);
@@ -201,12 +185,12 @@ class PHPushbullet
     }
 
     /**
-	 * Get the `iden` for the device by either the iden or nickname
-	 *
-	 * @param string $device
+     * Get the `iden` for the device by either the iden or nickname
      *
-	 * @return mixed (boolean|string)
-	 */
+     * @param string $device
+     *
+     * @return mixed (boolean|string)
+     */
     protected function getDeviceIden($device)
     {
         foreach ($this->devices() as $available_device) {
@@ -217,24 +201,32 @@ class PHPushbullet
             }
         }
 
-        return FALSE;
+        return false;
+    }
+
+    protected function argsToArray($args)
+    {
+        if (is_array($args[0])) {
+            return $args[0];
+        }
+
+        return $args;
     }
 
     /**
-	 * Magic method, figures out what sort of push the user is trying to do
-	 */
+     * Magic method, figures out what sort of push the user is trying to do
+     */
     public function __call($method, $arguments)
     {
         $request_class = 'PHPushbullet\Request\Push' . ucwords($method);
 
-        if (class_exists($request_class)) {
-            $class   = new \ReflectionClass($request_class);
-            $request = $class->newInstanceArgs($arguments);
-
-            return $this->push($request->request());
+        if (!class_exists($request_class)) {
+            throw new \Exception('Unknown method "' . $method . '"');
         }
 
-        throw new \Exception('Unknown method "' . $method . '"');
-    }
+        $class   = new \ReflectionClass($request_class);
+        $request = $class->newInstanceArgs($arguments);
 
+        return $this->push($request->request());
+    }
 }

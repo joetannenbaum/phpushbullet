@@ -16,31 +16,30 @@ class NoteTest extends PHPushbulletTestBase
         ];
 
         $response = $this->pushResponse([
-                                          'type'  => 'note',
-                                          'title' => 'Reminder',
-                                          'body'  => 'Do this thing',
-                                        ]);
+          'type'  => 'note',
+          'title' => 'Reminder',
+          'body'  => 'Do this thing',
+        ]);
 
         $this->mock([
-            $this->okResponse( $devices ),
-            $this->okResponse( $response ),
+            $this->okResponse($devices),
+            $this->okResponse($response),
         ]);
 
         $response = $this->pushbullet->device('Chrome')->note('Reminder', 'Do this thing');
 
-        $this->assertInternalType( 'array', $response );
-        $this->assertCount( 1, $response );
+        $this->assertInternalType('array', $response);
+        $this->assertCount(1, $response);
 
-        $first = reset( $response );
+        $first = reset($response);
 
-        $this->assertSame( 'note', $first['type'] );
-        $this->assertSame( 'Reminder', $first['title'] );
-        $this->assertSame( 'Do this thing', $first['body'] );
+        $this->assertSame('note', $first['type']);
+        $this->assertSame('Reminder', $first['title']);
+        $this->assertSame('Do this thing', $first['body']);
 
-        $expected_flow = [ 'devices', 'pushes' ];
+        $expected_flow = ['devices', 'pushes'];
         $actual_flow   = $this->getFlow();
 
-        $this->assertSame( $expected_flow, $actual_flow );
+        $this->assertSame($expected_flow, $actual_flow);
     }
-
 }

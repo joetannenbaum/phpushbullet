@@ -16,35 +16,35 @@ class FileTest extends PHPushbulletTestBase
         ];
 
         $response = $this->pushResponse([
-                                            'type'      => 'file',
-                                            'file_name' => 'Kitten',
-                                            'file_url'  => 'http://placehold.it/350x150',
-                                            'file_type' => 'image/jpeg',
-                                            'body'      => 'Just a baby cat.',
-                                        ]);
-
-        $this->mock([
-            $this->okResponse( $devices ),
-            $this->okResponse( $response ),
+            'type'      => 'file',
+            'file_name' => 'Kitten',
+            'file_url'  => 'http://placehold.it/350x150',
+            'file_type' => 'image/jpeg',
+            'body'      => 'Just a baby cat.',
         ]);
 
-        $response = $this->pushbullet->device('Chrome')->file( 'Kitten', 'http://placehold.it/350x150', 'Just a baby cat.' );
+        $this->mock([
+            $this->okResponse($devices),
+            $this->okResponse($response),
+        ]);
 
-        $this->assertInternalType( 'array', $response );
-        $this->assertCount( 1, $response );
+        $response = $this->pushbullet->device('Chrome')->file('Kitten', 'http://placehold.it/350x150', 'Just a baby cat.');
 
-        $first = reset( $response );
+        $this->assertInternalType('array', $response);
+        $this->assertCount(1, $response);
 
-        $this->assertSame( 'file', $first['type'] );
-        $this->assertSame( 'Kitten', $first['file_name'] );
-        $this->assertSame( 'http://placehold.it/350x150', $first['file_url'] );
-        $this->assertSame( 'image/jpeg', $first['file_type'] );
-        $this->assertSame( 'Just a baby cat.', $first['body'] );
+        $first = reset($response);
 
-        $expected_flow = [ 'devices', 'pushes' ];
+        $this->assertSame('file', $first['type']);
+        $this->assertSame('Kitten', $first['file_name']);
+        $this->assertSame('http://placehold.it/350x150', $first['file_url']);
+        $this->assertSame('image/jpeg', $first['file_type']);
+        $this->assertSame('Just a baby cat.', $first['body']);
+
+        $expected_flow = ['devices', 'pushes'];
         $actual_flow   = $this->getFlow();
 
-        $this->assertSame( $expected_flow, $actual_flow );
+        $this->assertSame($expected_flow, $actual_flow);
     }
 
     /** @test */
@@ -59,33 +59,32 @@ class FileTest extends PHPushbulletTestBase
         ];
 
         $response = $this->pushResponse([
-                                            'type'      => 'file',
-                                            'file_name' => 'Kitten',
-                                            'file_url'  => 'http://placehold.it/350x150',
-                                            'file_type' => 'image/jpeg',
-                                        ]);
-
-        $this->mock([
-            $this->okResponse( $devices ),
-            $this->okResponse( $response ),
+            'type'      => 'file',
+            'file_name' => 'Kitten',
+            'file_url'  => 'http://placehold.it/350x150',
+            'file_type' => 'image/jpeg',
         ]);
 
-        $response = $this->pushbullet->device('Chrome')->file( 'Kitten', 'http://placehold.it/350x150' );
+        $this->mock([
+            $this->okResponse($devices),
+            $this->okResponse($response),
+        ]);
 
-        $this->assertInternalType( 'array', $response );
-        $this->assertCount( 1, $response );
+        $response = $this->pushbullet->device('Chrome')->file('Kitten', 'http://placehold.it/350x150');
 
-        $first = reset( $response );
+        $this->assertInternalType('array', $response);
+        $this->assertCount(1, $response);
 
-        $this->assertSame( 'file', $first['type'] );
-        $this->assertSame( 'Kitten', $first['file_name'] );
-        $this->assertSame( 'http://placehold.it/350x150', $first['file_url'] );
-        $this->assertSame( 'image/jpeg', $first['file_type'] );
+        $first = reset($response);
 
-        $expected_flow = [ 'devices', 'pushes' ];
+        $this->assertSame('file', $first['type']);
+        $this->assertSame('Kitten', $first['file_name']);
+        $this->assertSame('http://placehold.it/350x150', $first['file_url']);
+        $this->assertSame('image/jpeg', $first['file_type']);
+
+        $expected_flow = ['devices', 'pushes'];
         $actual_flow   = $this->getFlow();
 
-        $this->assertSame( $expected_flow, $actual_flow );
+        $this->assertSame($expected_flow, $actual_flow);
     }
-
 }

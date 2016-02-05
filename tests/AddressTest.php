@@ -22,25 +22,25 @@ class AddressTest extends PHPushbulletTestBase
                                         ]);
 
         $this->mock([
-            $this->okResponse( $devices ),
-            $this->okResponse( $response ),
+            $this->okResponse($devices),
+            $this->okResponse($response),
         ]);
 
         $response = $this->pushbullet->device('Chrome')->address('Home', '123 Sesame Street');
 
-        $this->assertInternalType( 'array', $response );
-        $this->assertCount( 1, $response );
+        $this->assertInternalType('array', $response);
+        $this->assertCount(1, $response);
 
-        $first = reset( $response );
+        $first = reset($response);
 
-        $this->assertSame( 'address', $first['type'] );
-        $this->assertSame( 'Home', $first['name'] );
-        $this->assertSame( '123 Sesame Street', $first['address'] );
+        $this->assertSame('address', $first['type']);
+        $this->assertSame('Home', $first['name']);
+        $this->assertSame('123 Sesame Street', $first['address']);
 
         $expected_flow = [ 'devices', 'pushes' ];
         $actual_flow   = $this->getFlow();
 
-        $this->assertSame( $expected_flow, $actual_flow );
+        $this->assertSame($expected_flow, $actual_flow);
     }
 
     /** @test */
@@ -61,8 +61,8 @@ class AddressTest extends PHPushbulletTestBase
                                         ]);
 
         $this->mock([
-            $this->okResponse( $devices ),
-            $this->okResponse( $response ),
+            $this->okResponse($devices),
+            $this->okResponse($response),
         ]);
 
         $address = [
@@ -74,19 +74,18 @@ class AddressTest extends PHPushbulletTestBase
 
         $response = $this->pushbullet->device('Chrome')->address('Home', $address);
 
-        $this->assertInternalType( 'array', $response );
-        $this->assertCount( 1, $response );
+        $this->assertInternalType('array', $response);
+        $this->assertCount(1, $response);
 
-        $first = reset( $response );
+        $first = reset($response);
 
-        $this->assertSame( 'address', $first['type'] );
-        $this->assertSame( 'Home', $first['name'] );
-        $this->assertSame( '123 Sesame Street New York NY 10001', $first['address'] );
+        $this->assertSame('address', $first['type']);
+        $this->assertSame('Home', $first['name']);
+        $this->assertSame('123 Sesame Street New York NY 10001', $first['address']);
 
         $expected_flow = [ 'devices', 'pushes' ];
         $actual_flow   = $this->getFlow();
 
-        $this->assertSame( $expected_flow, $actual_flow );
+        $this->assertSame($expected_flow, $actual_flow);
     }
-
 }
