@@ -23,12 +23,7 @@ class Connection
 
     public function __construct($access_token)
     {
-        $this->client = new Client([
-            'base_url' => [$this->base_url, []],
-            'defaults' => [
-                'auth' => [$access_token, ''],
-            ],
-        ]);
+        $this->client = new Client($this->getClientParams($access_token));
     }
 
     /**
@@ -37,5 +32,28 @@ class Connection
     public function client()
     {
         return $this->client;
+    }
+
+    protected function getClientParams($access_token)
+    {
+        if (substr(Client::VERSION, 0, 1) == 6) {
+            return [
+                'base_uri' => $this->base_url,
+                'headers'  => [
+                    'Access-Token' => $access_token,
+                    'Content-Type' => 'application/json',
+                ],
+            ];
+        }
+
+        return [
+            'base_url' => [$this->base_url, []],
+            'defaults' => [
+                'headers'  => [
+                    'Access-Token' => $access_token,
+                    'Content-Type' => 'application/json',
+                ],
+            ],
+        ];
     }
 }
