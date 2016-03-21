@@ -23,9 +23,6 @@ class UserTest extends PHPushbulletTestBase
         $this->assertInternalType('array', $response);
         $this->assertCount(1, $response);
 
-        $expected_flow = ['pushes'];
-        $actual_flow   = $this->getFlow();
-
-        $this->assertSame($expected_flow, $actual_flow);
+        $this->assertRequestHistory(['pushes']);
     }
 }

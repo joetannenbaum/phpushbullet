@@ -1,9 +1,6 @@
 <?php
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Subscriber\Mock;
-use GuzzleHttp\Message\Response;
-use GuzzleHttp\Subscriber\History;
 use PHPushbullet\PHPushbullet;
 
 class PHPushbulletTestBase extends PHPUnit_Framework_TestCase
@@ -14,17 +11,17 @@ class PHPushbulletTestBase extends PHPUnit_Framework_TestCase
 
     protected $history;
 
+    protected $guzzle_6;
+
     public function setUp()
     {
-        $reflected = new ReflectionClass('PHPushbullet\PHPushbullet');
-
-        $this->history = new History();
-
-        $this->client = $reflected->getProperty('api');
-        $this->client->setAccessible(true);
         $this->pushbullet = new PHPushbullet('random');
-        $this->client->setValue($this->pushbullet, new Client());
-        $this->client->getValue($this->pushbullet)->getEmitter()->attach($this->history);
+        $this->guzzle_6   = version_compare(Client::VERSION, 6, '>=');
+
+        if (!$this->guzzle_6) {
+            $this->history = new \GuzzleHttp\Subscriber\History();
+            $this->pushbullet->getClient()->getEmitter()->attach($this->history);
+        }
     }
 
     protected function okResponse($body)
@@ -43,9 +40,9 @@ class PHPushbulletTestBase extends PHPUnit_Framework_TestCase
 
     protected function mock($mock)
     {
-        $mock = new Mock($mock);
+        $mock = new \GuzzleHttp\Subscriber\Mock($mock);
 
-        $this->client->getValue($this->pushbullet)->getEmitter()->attach($mock);
+        $this->pushbullet->getClient()->getEmitter()->attach($mock);
     }
 
     protected function pushResponse($vars)
@@ -102,7 +99,7 @@ class PHPushbulletTestBase extends PHPUnit_Framework_TestCase
             ]
         ];
 
-        return $devices[ $type ];
+        return $devices[$type];
     }
 
     protected function getFlow()
@@ -110,6 +107,15 @@ class PHPushbulletTestBase extends PHPUnit_Framework_TestCase
         return array_map(function ($request) {
             return $request->getUrl();
         }, $this->history->getRequests());
+    }
+
+    protected function assertRequestHistory(array $expected)
+    {
+        $expected = array_map(function ($endpoint) {
+            return 'https://api.pushbullet.com/v2/' . $endpoint;
+        }, $expected);
+
+        $this->assertSame($expected, $this->getFlow());
     }
 
     /** @test **/

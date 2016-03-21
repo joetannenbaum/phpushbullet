@@ -39,10 +39,7 @@ class LinkTest extends PHPushbulletTestBase
         $this->assertSame('http://www.google.com', $first['url']);
         $this->assertSame('Search it', $first['body']);
 
-        $expected_flow = ['devices', 'pushes'];
-        $actual_flow   = $this->getFlow();
-
-        $this->assertSame($expected_flow, $actual_flow);
+        $this->assertRequestHistory(['devices', 'pushes']);
     }
 
     /** @test */
@@ -78,9 +75,6 @@ class LinkTest extends PHPushbulletTestBase
         $this->assertSame('Google', $first['title']);
         $this->assertSame('http://www.google.com', $first['url']);
 
-        $expected_flow = ['devices', 'pushes'];
-        $actual_flow   = $this->getFlow();
-
-        $this->assertSame($expected_flow, $actual_flow);
+        $this->assertRequestHistory(['devices', 'pushes']);
     }
 }

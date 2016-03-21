@@ -26,14 +26,19 @@ class PushFile extends Request
      * Get the file type based on the file url
      *
      * @param string $file_url
+     *
      * @return string
      */
 
     protected function getFileType($file_url)
     {
-        $client    = new Client();
-        $file_info = $client->head($file_url);
+        $file_info = (new Client())->head($file_url);
+        $file_type = $file_info->getHeader('content-type');
 
-        return $file_info->getHeader('content-type');
+        if (is_array($file_type)) {
+            return reset($file_type);
+        }
+
+        return $file_type;
     }
 }

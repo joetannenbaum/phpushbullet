@@ -41,10 +41,7 @@ class FileTest extends PHPushbulletTestBase
         $this->assertSame('image/jpeg', $first['file_type']);
         $this->assertSame('Just a baby cat.', $first['body']);
 
-        $expected_flow = ['devices', 'pushes'];
-        $actual_flow   = $this->getFlow();
-
-        $this->assertSame($expected_flow, $actual_flow);
+        $this->assertRequestHistory(['devices', 'pushes']);
     }
 
     /** @test */
@@ -82,9 +79,6 @@ class FileTest extends PHPushbulletTestBase
         $this->assertSame('http://placehold.it/350x150', $first['file_url']);
         $this->assertSame('image/jpeg', $first['file_type']);
 
-        $expected_flow = ['devices', 'pushes'];
-        $actual_flow   = $this->getFlow();
-
-        $this->assertSame($expected_flow, $actual_flow);
+        $this->assertRequestHistory(['devices', 'pushes']);
     }
 }

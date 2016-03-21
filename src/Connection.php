@@ -36,24 +36,21 @@ class Connection
 
     protected function getClientParams($access_token)
     {
-        if (substr(Client::VERSION, 0, 1) == 6) {
+        $headers = [
+            'Access-Token' => $access_token,
+            'Content-Type' => 'application/json',
+        ];
+
+        if (version_compare(Client::VERSION, 6, '>=')) {
             return [
                 'base_uri' => $this->base_url,
-                'headers'  => [
-                    'Access-Token' => $access_token,
-                    'Content-Type' => 'application/json',
-                ],
+                'headers'  => $headers,
             ];
         }
 
         return [
             'base_url' => [$this->base_url, []],
-            'defaults' => [
-                'headers'  => [
-                    'Access-Token' => $access_token,
-                    'Content-Type' => 'application/json',
-                ],
-            ],
+            'defaults' => ['headers'  => $headers],
         ];
     }
 }

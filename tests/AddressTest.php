@@ -37,10 +37,7 @@ class AddressTest extends PHPushbulletTestBase
         $this->assertSame('Home', $first['name']);
         $this->assertSame('123 Sesame Street', $first['address']);
 
-        $expected_flow = [ 'devices', 'pushes' ];
-        $actual_flow   = $this->getFlow();
-
-        $this->assertSame($expected_flow, $actual_flow);
+        $this->assertRequestHistory(['devices', 'pushes']);
     }
 
     /** @test */
@@ -83,9 +80,6 @@ class AddressTest extends PHPushbulletTestBase
         $this->assertSame('Home', $first['name']);
         $this->assertSame('123 Sesame Street New York NY 10001', $first['address']);
 
-        $expected_flow = [ 'devices', 'pushes' ];
-        $actual_flow   = $this->getFlow();
-
-        $this->assertSame($expected_flow, $actual_flow);
+        $this->assertRequestHistory(['devices', 'pushes']);
     }
 }

@@ -37,9 +37,6 @@ class NoteTest extends PHPushbulletTestBase
         $this->assertSame('Reminder', $first['title']);
         $this->assertSame('Do this thing', $first['body']);
 
-        $expected_flow = ['devices', 'pushes'];
-        $actual_flow   = $this->getFlow();
-
-        $this->assertSame($expected_flow, $actual_flow);
+        $this->assertRequestHistory(['devices', 'pushes']);
     }
 }

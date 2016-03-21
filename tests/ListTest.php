@@ -49,9 +49,6 @@ class ListTest extends PHPushbulletTestBase
                             'Other thing',
                           ], $first['items']);
 
-        $expected_flow = ['devices', 'pushes'];
-        $actual_flow   = $this->getFlow();
-
-        $this->assertSame($expected_flow, $actual_flow);
+        $this->assertRequestHistory(['devices', 'pushes']);
     }
 }
