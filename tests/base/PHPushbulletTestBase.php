@@ -1,6 +1,7 @@
 <?php
 
 use GuzzleHttp\Client;
+use PHPushbullet\Connection;
 use PHPushbullet\PHPushbullet;
 
 class PHPushbulletTestBase extends PHPUnit_Framework_TestCase
@@ -13,20 +14,41 @@ class PHPushbulletTestBase extends PHPUnit_Framework_TestCase
 
     protected $guzzle_6;
 
+    protected $mock_handler;
+
     public function setUp()
     {
-        $this->pushbullet = new PHPushbullet('random');
-        $this->guzzle_6   = version_compare(Client::VERSION, 6, '>=');
+        $this->guzzle_6 = version_compare(Client::VERSION, 6, '>=');
 
-        if (!$this->guzzle_6) {
+        if ($this->guzzle_6) {
+            $this->mock_handler = new \GuzzleHttp\Handler\MockHandler();
+            $this->history      = [];
+
+            $history = \GuzzleHttp\Middleware::history($this->history);
+            $stack   = \GuzzleHttp\HandlerStack::create($this->mock_handler);
+            $stack->push($history);
+            $client  = new Client(['handler' => $stack]);
+        } else {
+            $client        = new Client();
             $this->history = new \GuzzleHttp\Subscriber\History();
-            $this->pushbullet->getClient()->getEmitter()->attach($this->history);
+            $this->mock_handler = new \GuzzleHttp\Subscriber\Mock();
+
+            $client->getEmitter()->attach($this->history);
+            $client->getEmitter()->attach($this->mock_handler);
         }
+
+        $connection = new Connection('random', $client);
+
+        $this->pushbullet = new PHPushbullet('random', $connection);
     }
 
     protected function okResponse($body)
     {
         $body = json_encode($body);
+
+        if ($this->guzzle_6) {
+            return new \GuzzleHttp\Psr7\Response(200, ['Content-Length' => strlen($body)], $body);
+        }
 
         $response = [
             'HTTP/1.1 200 OK',
@@ -38,11 +60,15 @@ class PHPushbulletTestBase extends PHPUnit_Framework_TestCase
         return implode("\r\n", $response);
     }
 
-    protected function mock($mock)
+    protected function mock(array $mocks)
     {
-        $mock = new \GuzzleHttp\Subscriber\Mock($mock);
-
-        $this->pushbullet->getClient()->getEmitter()->attach($mock);
+        foreach ($mocks as $mock) {
+            if ($this->guzzle_6) {
+                $this->mock_handler->append($mock);
+            } else {
+                $this->mock_handler->addResponse($mock);
+            }
+        }
     }
 
     protected function pushResponse($vars)
@@ -102,8 +128,14 @@ class PHPushbulletTestBase extends PHPUnit_Framework_TestCase
         return $devices[$type];
     }
 
-    protected function getFlow()
+    protected function getRuquestUrls()
     {
+        if ($this->guzzle_6) {
+            return array_map(function ($request) {
+                return (string) $request['request']->getUri();
+            }, $this->history);
+        }
+
         return array_map(function ($request) {
             return $request->getUrl();
         }, $this->history->getRequests());
@@ -111,11 +143,7 @@ class PHPushbulletTestBase extends PHPUnit_Framework_TestCase
 
     protected function assertRequestHistory(array $expected)
     {
-        $expected = array_map(function ($endpoint) {
-            return 'https://api.pushbullet.com/v2/' . $endpoint;
-        }, $expected);
-
-        $this->assertSame($expected, $this->getFlow());
+        $this->assertSame($expected, $this->getRuquestUrls());
     }
 
     /** @test **/

@@ -21,9 +21,9 @@ class Connection
      */
     protected $client;
 
-    public function __construct($access_token)
+    public function __construct($access_token, Client $client = null)
     {
-        $this->client = new Client($this->getClientParams($access_token));
+        $this->client = $client ?: new Client($this->getClientParams($access_token));
     }
 
     /**
