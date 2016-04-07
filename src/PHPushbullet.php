@@ -48,7 +48,7 @@ class PHPushbullet
      */
     protected $all_devices = [];
 
-    public function __construct($access_token = null, Connection $connection =  null)
+    public function __construct($access_token = null, Connection $connection =  null, array $config = [])
     {
         $access_token = $access_token ?: getenv('pushbullet.access_token');
 
@@ -56,7 +56,7 @@ class PHPushbullet
             throw new \Exception('Your Pushbullet access token is not set.');
         }
 
-        $connection = $connection ?: new Connection($access_token);
+        $connection = $connection ?: new Connection($access_token, null, $config);
 
         $this->api = $connection->client();
     }

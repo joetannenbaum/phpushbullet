@@ -21,9 +21,9 @@ class Connection
      */
     protected $client;
 
-    public function __construct($access_token, Client $client = null)
+    public function __construct($access_token, Client $client = null, array $config = [])
     {
-        $this->client = $client ?: new Client($this->getClientParams($access_token));
+        $this->client = $client ?: new Client($this->getClientParams($access_token, $config));
     }
 
     /**
@@ -34,7 +34,7 @@ class Connection
         return $this->client;
     }
 
-    protected function getClientParams($access_token)
+    protected function getClientParams($access_token, array $config = [])
     {
         $headers = [
             'Access-Token' => $access_token,
@@ -42,15 +42,18 @@ class Connection
         ];
 
         if (version_compare(Client::VERSION, 6, '>=')) {
-            return [
+            return array_replace([
                 'base_uri' => $this->base_url,
                 'headers'  => $headers,
-            ];
+            ], $config);
         }
 
         return [
             'base_url' => [$this->base_url, []],
-            'defaults' => ['headers'  => $headers],
+            'defaults' => array_replace(
+                            ['headers'  => $headers],
+                            $config
+            ),
         ];
     }
 }
