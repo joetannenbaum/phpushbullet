@@ -41,19 +41,17 @@ class Connection
             'Content-Type' => 'application/json',
         ];
 
+        $config = array_merge(compact('headers'), $config);
+
         if (version_compare(Client::VERSION, 6, '>=')) {
-            return array_replace([
+            return array_merge([
                 'base_uri' => $this->base_url,
-                'headers'  => $headers,
             ], $config);
         }
 
         return [
             'base_url' => [$this->base_url, []],
-            'defaults' => array_replace(
-                            ['headers'  => $headers],
-                            $config
-            ),
+            'defaults' => $config,
         ];
     }
 }
